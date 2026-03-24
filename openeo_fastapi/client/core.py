@@ -47,6 +47,10 @@ APPLICATION_ENDPOINTS = [
         path="/credentials/oidc",
         methods=["GET"],
     ),
+    Endpoint(
+        path="/file_formats",
+        methods=["GET"],
+    ),
 ]
 
 
