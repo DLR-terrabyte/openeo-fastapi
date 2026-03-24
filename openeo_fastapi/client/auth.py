@@ -16,7 +16,7 @@ from typing import List
 import requests
 from fastapi import Header, HTTPException
 from jose import jwt
-from pydantic import BaseModel, ValidationError, validator
+from pydantic import BaseModel, ValidationError, validator, PrivateAttr
 
 from openeo_fastapi.api.types import Error
 from openeo_fastapi.client.psql.engine import Filter, create, get_first_or_default
@@ -35,6 +35,7 @@ class User(BaseModel):
     user_id: uuid.UUID
     oidc_sub: str
     created_at: datetime.datetime = datetime.datetime.utcnow()
+    _access_token: str | None = PrivateAttr(default=None)
 
     class Config:
         """Pydantic model class config."""
@@ -204,7 +205,7 @@ class IssuerHandler(BaseModel):
         if rsa_key:
             # Validate the token and verify claims
             payload = jwt.decode(
-                token, rsa_key, algorithms=ALGORITHMS, issuer=self.issuer_uri
+                token, rsa_key, audience='account', algorithms=ALGORITHMS, issuer=self.issuer_uri
             )
             return payload
 
