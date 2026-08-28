@@ -125,17 +125,15 @@ class OpenEOCore:
             providers=[
                 Provider(
                     id=self.settings.OIDC_ORGANISATION,
-                    title="EGI Check-in",
+                    title="terrabyte",
                     issuer=self.settings.OIDC_URL,
                     scopes=[
                         "openid",
                         "email",
-                        "eduperson_entitlement",
-                        "eduperson_scoped_affiliation",
                     ],
                     default_clients=[
                         DefaultClient(
-                            id="openeo-platform-default-client",
+                            id="at.eox.hub.terrabyte-api",
                             redirect_urls=[
                                 "https://editor.openeo.cloud/",
                                 "https://editor.openeo.org/",
