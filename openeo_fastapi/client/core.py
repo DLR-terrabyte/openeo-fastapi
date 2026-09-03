@@ -133,11 +133,9 @@ class OpenEOCore:
                     ],
                     default_clients=[
                         DefaultClient(
-                            id="at.eox.hub.terrabyte-api",
+                            id="de.lrz.terrabyte.processing",
                             redirect_urls=[
-                                "https://editor.openeo.cloud/",
-                                "https://editor.openeo.org/",
-                                "http://localhost:1410/",
+                                "https://processing.terrabyte.lrz.de",
                             ],
                             grant_types=[
                                 GrantType.authorization_code_pkce,
