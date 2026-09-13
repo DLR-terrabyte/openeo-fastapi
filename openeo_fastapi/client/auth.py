@@ -14,8 +14,8 @@ from enum import Enum
 from typing import List
 
 import requests
-from fastapi import Header, HTTPException
-from jose import jwt
+from fastapi import Header, HTTPException, status
+from jose import jwt, ExpiredSignatureError
 from pydantic import BaseModel, ValidationError, validator, PrivateAttr
 
 from openeo_fastapi.api.types import Error
@@ -75,7 +75,16 @@ class Authenticator(ABC):
             policies = settings.OIDC_POLICIES
         issuer = IssuerHandler(issuer_uri=settings.OIDC_URL, policies=policies)
 
-        user_info = issuer.validate_token(authorization)
+        try:
+            user_info = issuer.validate_token(authorization)
+        except ExpiredSignatureError as e: 
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail={
+                    "code": "TokenInvalid",
+                    "message": "Access token has expired.",
+               }
+            )
 
         found_user = get_first_or_default(
             User, Filter(column_name="oidc_sub", value=user_info["sub"])
