@@ -387,6 +387,9 @@ class Dimension(BaseModel):
     """Model to describe the dimension of some data."""
     type: DinensionEnum = Field(..., description="Type of the dimension.")
     description: Optional[str] = None
+    axis: Optional[str] = None
+    extent: Optional[list[Any]] = None
+    values: Optional[list[Any]] = None
 
 
 class Spatial(BaseModel):
